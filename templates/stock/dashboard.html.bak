@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block title %}Inicio | Control de Stock{% endblock %}{% block content %}
+<h1>Panel general</h1><p class="muted">Resumen del negocio · {{ today|date:"d/m/Y" }}</p>
+<div class="cards">
+<div class="card"><div class="muted">Productos activos</div><div class="num">{{ product_count }}</div><p><a href="/admin/stock/product/">Ver productos →</a></p></div>
+<div class="card"><div class="muted">Ventas de hoy</div><div class="num">Gs. {{ sales_today|floatformat:0 }}</div><p class="muted">Total registrado en el día</p></div>
+<div class="card"><div class="muted">Ventas del mes</div><div class="num">Gs. {{ sales_month|floatformat:0 }}</div><p class="muted">Mes en curso</p></div>
+<div class="card"><div class="muted">Gastos del mes</div><div class="num">Gs. {{ expenses_month|floatformat:0 }}</div><p><a href="/admin/stock/expense/">Ver gastos →</a></p></div>
+<div class="card"><div class="muted">Valor del stock al costo</div><div class="num">Gs. {{ stock_value|floatformat:0 }}</div><p><a href="/admin/stock/product/">Consultar inventario →</a></p></div>
+<div class="card"><div class="muted">Operaciones registradas</div><div class="num">{{ sale_count }} ventas · {{ purchase_count }} compras</div><p class="muted">{{ customer_count }} clientes · {{ supplier_count }} proveedores</p></div>
+</div>
+<h2 style="margin-top:28px">Alertas de stock bajo</h2>
+<div class="card">{% if low_stock %}{% for p in low_stock %}<div class="warn"><strong>{{ p.name }}</strong> — quedan {{ p.stock }}; mínimo configurado: {{ p.minimum_stock }} <span class="muted">({{ p.code }})</span></div>{% endfor %}{% else %}<p>No hay alertas de stock mínimo con los datos actuales.</p>{% endif %}</div>
+<h2 style="margin-top:28px">Accesos rápidos</h2><div class="cards"><div class="card"><h3>Mercadería</h3><p class="muted">Productos, categorías y niveles de stock.</p><a class="btn" href="/admin/stock/product/">Abrir stock</a></div><div class="card"><h3>Ventas</h3><p class="muted">Ventas, medios de pago y detalle de artículos.</p><a class="btn" href="/admin/stock/sale/">Abrir ventas</a></div><div class="card"><h3>Compras</h3><p class="muted">Compras y proveedores.</p><a class="btn" href="/admin/stock/purchase/">Abrir compras</a></div><div class="card"><h3>Contabilidad básica</h3><p class="muted">Gastos, clientes y registros operativos.</p><a class="btn" href="/admin/">Abrir administración</a></div></div>
+<p class="muted" style="margin-top:20px">Nota: el panel resume registros ingresados. La contabilización automática de cada venta/compra y el balance contable formal deben completarse y probarse antes de utilizarlo en producción.</p>
+{% endblock %}

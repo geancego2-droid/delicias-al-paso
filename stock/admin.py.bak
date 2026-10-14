@@ -1,0 +1,37 @@
+from django.contrib import admin
+from .models import Category, Supplier, Customer, Product, Purchase, PurchaseItem, Sale, SaleItem, Expense, StockMovement
+
+class PurchaseItemInline(admin.TabularInline):
+    model = PurchaseItem
+    extra = 1
+class SaleItemInline(admin.TabularInline):
+    model = SaleItem
+    extra = 1
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ("code", "name", "category", "cost_price", "sale_price", "stock", "minimum_stock", "active")
+    list_filter = ("active", "category")
+    search_fields = ("code", "name", "supplier__name")
+    list_editable = ("stock", "minimum_stock", "active")
+    readonly_fields = ("created_at", "updated_at")
+@admin.register(Purchase)
+class PurchaseAdmin(admin.ModelAdmin):
+    list_display = ("id", "purchased_at", "supplier", "invoice_number", "total", "created_by")
+    list_filter = ("purchased_at", "supplier")
+    inlines = [PurchaseItemInline]
+@admin.register(Sale)
+class SaleAdmin(admin.ModelAdmin):
+    list_display = ("id", "sold_at", "customer", "payment_method", "total", "paid", "created_by")
+    list_filter = ("sold_at", "payment_method")
+    inlines = [SaleItemInline]
+@admin.register(Expense)
+class ExpenseAdmin(admin.ModelAdmin):
+    list_display = ("date", "category", "description", "amount", "paid_from_cash", "created_by")
+    list_filter = ("date", "category")
+    search_fields = ("description",)
+for model in (Category, Supplier, Customer, PurchaseItem, SaleItem, StockMovement):
+    admin.site.register(model)
+admin.site.site_header = "Control de Stock — Almacén"
+admin.site.site_title = "Control de Stock"
+admin.site.index_title = "Administración del negocio"

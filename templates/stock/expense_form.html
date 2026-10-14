@@ -1,0 +1,14 @@
+{% extends 'stock/base.html' %}
+{% block content %}
+<h1>💸 Registrar gasto</h1>
+<p>Ingresá el gasto del negocio en guaraníes.</p>
+<form method="post">
+  {% csrf_token %}
+  <div class="card">
+    {{ form.non_field_errors }}
+    {{ form.as_p }}
+    <button class="btn" type="submit" style="width:100%;min-height:48px">✅ Guardar gasto</button>
+    <p><a href="{% url 'stock-dashboard' %}">Cancelar y volver al inicio</a></p>
+  </div>
+</form>
+{% endblock %}

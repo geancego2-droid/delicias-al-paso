@@ -1,0 +1,1 @@
+{% extends 'stock/base.html' %}{% block content %}<h1>🔒 Cerrar caja</h1><div class="card"><h2>Efectivo esperado</h2><div class="total">Gs. {{ expected|floatformat:0 }}</div><form method="post">{% csrf_token %}<label>Efectivo contado (Gs.)</label><input name="counted_amount" type="number" min="0" required><button class="btn">Confirmar cierre</button></form></div>{% endblock %}
