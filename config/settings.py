@@ -9,7 +9,7 @@ except ImportError:
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "CAMBIAR-ESTA-CLAVE-ANTES-DE-PUBLICAR")
-DEBUG = os.environ.get("DJANGO_DEBUG", "1") == "1"
+DEBUG = os.environ.get("DJANGO_DEBUG", "0") == "1"
 ALLOWED_HOSTS = [h.strip() for h in os.environ.get("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost,testserver,192.168.0.22").split(",") if h.strip()]
 CSRF_TRUSTED_ORIGINS = [h.strip() for h in os.environ.get("DJANGO_CSRF_TRUSTED_ORIGINS", "http://192.168.0.22:8000").split(",") if h.strip()]
 
