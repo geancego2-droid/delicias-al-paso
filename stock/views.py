@@ -95,6 +95,15 @@ def new_customer(request):
     return render(request, 'stock/contact_form.html', {'form': form, 'title': 'Nuevo cliente', 'icon': '👥'})
 
 @login_required
+@require_http_methods(['GET','POST'])
+def edit_customer(request, customer_id):
+    customer = Customer.objects.get(pk=customer_id)
+    form = CustomerForm(request.POST or None, instance=customer)
+    if form.is_valid():
+        form.save(); messages.success(request, 'Cliente actualizado correctamente.'); return redirect('customers')
+    return render(request, 'stock/contact_form.html', {'form': form, 'title': 'Editar cliente', 'icon': 'Editar', 'customer': customer})
+
+@login_required
 def suppliers(request):
     suppliers = Supplier.objects.all()
     return render(request, 'stock/suppliers.html', {'suppliers': suppliers})
@@ -106,6 +115,15 @@ def new_supplier(request):
     if form.is_valid():
         form.save(); messages.success(request, 'Proveedor creado correctamente.'); return redirect('suppliers')
     return render(request, 'stock/contact_form.html', {'form': form, 'title': 'Nuevo proveedor', 'icon': '🏢'})
+
+@login_required
+@require_http_methods(['GET','POST'])
+def edit_supplier(request, supplier_id):
+    supplier = Supplier.objects.get(pk=supplier_id)
+    form = SupplierForm(request.POST or None, instance=supplier)
+    if form.is_valid():
+        form.save(); messages.success(request, 'Proveedor actualizado correctamente.'); return redirect('suppliers')
+    return render(request, 'stock/contact_form.html', {'form': form, 'title': 'Editar proveedor', 'icon': 'Editar', 'supplier': supplier})
 
 @login_required
 @require_http_methods(['GET','POST'])
