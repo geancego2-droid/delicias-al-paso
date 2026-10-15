@@ -1,0 +1,1 @@
+{% extends 'stock/base.html' %}{% block content %}<h1>🏷️ Categorías</h1><a class="btn" href="{% url 'new_category' %}">➕ Nueva categoría</a><table class="table"><tr><th>Nombre</th></tr>{% for category in categories %}<tr><td>{{ category.name }}</td></tr>{% empty %}<tr><td>No hay categorías.</td></tr>{% endfor %}</table>{% endblock %}

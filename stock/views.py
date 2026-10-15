@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Sum, F
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
-from .models import Product, Sale, Purchase, Expense, Customer, Supplier
-from .forms import SaleForm, SaleItemFormSet, PurchaseForm, PurchaseItemFormSet, ProductForm, ExpenseForm, CustomerForm, SupplierForm
+from .models import Product, Sale, Purchase, Expense, Customer, Supplier, Category
+from .forms import SaleForm, SaleItemFormSet, PurchaseForm, PurchaseItemFormSet, ProductForm, ExpenseForm, CustomerForm, SupplierForm, CategoryForm
 from .services import register_sale, register_purchase
 
 @login_required
@@ -71,6 +71,15 @@ def new_product(request):
     return render(request, 'stock/product_form.html', {'form': form, 'title': 'Nuevo producto'})
 
 @login_required
+@require_http_methods(['GET','POST'])
+def edit_product(request, product_id):
+    product = Product.objects.get(pk=product_id)
+    form = ProductForm(request.POST or None, instance=product)
+    if form.is_valid():
+        form.save(); messages.success(request, 'Producto actualizado correctamente.'); return redirect('products')
+    return render(request, 'stock/product_form.html', {'form': form, 'title': 'Editar producto', 'product': product})
+
+@login_required
 def customers(request):
     customers = Customer.objects.all(); data=[]
     for customer in customers:
@@ -97,6 +106,20 @@ def new_supplier(request):
     if form.is_valid():
         form.save(); messages.success(request, 'Proveedor creado correctamente.'); return redirect('suppliers')
     return render(request, 'stock/contact_form.html', {'form': form, 'title': 'Nuevo proveedor', 'icon': '🏢'})
+
+@login_required
+@require_http_methods(['GET','POST'])
+def categories(request):
+    categories = Category.objects.all()
+    return render(request, 'stock/categories.html', {'categories': categories})
+
+@login_required
+@require_http_methods(['GET','POST'])
+def new_category(request):
+    form = CategoryForm(request.POST or None)
+    if form.is_valid():
+        form.save(); messages.success(request, 'Categoría creada correctamente.'); return redirect('categories')
+    return render(request, 'stock/contact_form.html', {'form': form, 'title': 'Nueva categoría', 'icon': '🏷️'})
 
 
 @login_required

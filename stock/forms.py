@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import inlineformset_factory
-from .models import Product, Sale, SaleItem, Purchase, PurchaseItem, Expense, Customer, Supplier
+from .models import Product, Sale, SaleItem, Purchase, PurchaseItem, Expense, Customer, Supplier, Category
 
 class SaleForm(forms.ModelForm):
     class Meta:
@@ -24,3 +24,7 @@ class CustomerForm(forms.ModelForm):
 class SupplierForm(forms.ModelForm):
     class Meta:
         model=Supplier; fields=["name","ruc","phone","address","email","notes"]
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model=Category; fields=["name"]
