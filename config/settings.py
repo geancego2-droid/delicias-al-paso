@@ -8,14 +8,23 @@ except ImportError:
     dj_database_url = None
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+LOCAL_ENV = BASE_DIR / ".env.local"
+if LOCAL_ENV.exists():
+    for _line in LOCAL_ENV.read_text(encoding="utf-8").splitlines():
+        if "=" in _line and not _line.lstrip().startswith("#"):
+            _k, _v = _line.split("=", 1)
+            os.environ.setdefault(_k.strip(), _v.strip())
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "CAMBIAR-ESTA-CLAVE-ANTES-DE-PUBLICAR")
 DEBUG = os.environ.get("DJANGO_DEBUG", "0") == "1"
+ALLOWED_HOSTS = ["testserver"]
+
+# Railway / production hosts are added below
 ALLOWED_HOSTS = [h.strip() for h in os.environ.get("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost,testserver,192.168.0.22").split(",") if h.strip()]
 CSRF_TRUSTED_ORIGINS = [h.strip() for h in os.environ.get("DJANGO_CSRF_TRUSTED_ORIGINS", "http://192.168.0.22:8000").split(",") if h.strip()]
 
-# En producción nunca iniciar con una clave de demostración o demasiado corta.
+# En producciÃƒÆ’Ã‚Â³n nunca iniciar con una clave de demostraciÃƒÆ’Ã‚Â³n o demasiado corta.
 if not DEBUG and len(SECRET_KEY) < 50:
-    raise ImproperlyConfigured("Configure DJANGO_SECRET_KEY con una clave aleatoria de al menos 50 caracteres antes de ejecutar en producción.")
+    raise ImproperlyConfigured("Configure DJANGO_SECRET_KEY con una clave aleatoria de al menos 50 caracteres antes de ejecutar en producciÃƒÆ’Ã‚Â³n.")
 INSTALLED_APPS = [
     "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes",
     "django.contrib.sessions", "django.contrib.messages", "django.contrib.staticfiles",

@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import inlineformset_factory
-from .models import Product, Sale, SaleItem, Purchase, PurchaseItem, Expense
+from .models import Product, Sale, SaleItem, Purchase, PurchaseItem, Expense, Customer, Supplier
+
 class SaleForm(forms.ModelForm):
     class Meta:
         model=Sale; fields=["customer","payment_method","paid","notes"]
@@ -12,10 +13,14 @@ PurchaseItemFormSet=inlineformset_factory(Purchase,PurchaseItem,fields=["product
 class ProductForm(forms.ModelForm):
     class Meta:
         model=Product; fields=["code","name","category","supplier","cost_price","sale_price","stock","minimum_stock","expiry_date","active"]
-
-
 class ExpenseForm(forms.ModelForm):
     class Meta:
         model = Expense
         fields = ["date", "category", "description", "amount", "paid_from_cash"]
         widgets = {"date": forms.DateInput(attrs={"type": "date"})}
+class CustomerForm(forms.ModelForm):
+    class Meta:
+        model=Customer; fields=["name","document","phone","address","credit_limit","notes"]
+class SupplierForm(forms.ModelForm):
+    class Meta:
+        model=Supplier; fields=["name","ruc","phone","address","email","notes"]

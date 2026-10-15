@@ -1,0 +1,1 @@
+{% extends 'stock/base.html' %}{% block content %}<div class="card"><h1>{{ icon }} {{ title }}</h1><form method="post">{% csrf_token %}{{ form.as_p }}<button type="submit">Guardar</button> <a class="btn" href="javascript:history.back()">Cancelar</a></form></div>{% endblock %}

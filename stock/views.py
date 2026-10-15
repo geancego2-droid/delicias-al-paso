@@ -5,7 +5,7 @@ from django.db.models import Sum, F
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
 from .models import Product, Sale, Purchase, Expense, Customer, Supplier
-from .forms import SaleForm, SaleItemFormSet, PurchaseForm, PurchaseItemFormSet, ProductForm, ExpenseForm
+from .forms import SaleForm, SaleItemFormSet, PurchaseForm, PurchaseItemFormSet, ProductForm, ExpenseForm, CustomerForm, SupplierForm
 from .services import register_sale, register_purchase
 
 @login_required
@@ -76,6 +76,27 @@ def customers(request):
     for customer in customers:
         sales = Sale.objects.filter(customer=customer); debt=sum((s.balance_due for s in sales), 0); data.append((customer,debt))
     return render(request, 'stock/customers.html', {'data': data})
+
+@login_required
+@require_http_methods(['GET','POST'])
+def new_customer(request):
+    form = CustomerForm(request.POST or None)
+    if form.is_valid():
+        form.save(); messages.success(request, 'Cliente creado correctamente.'); return redirect('customers')
+    return render(request, 'stock/contact_form.html', {'form': form, 'title': 'Nuevo cliente', 'icon': '👥'})
+
+@login_required
+def suppliers(request):
+    suppliers = Supplier.objects.all()
+    return render(request, 'stock/suppliers.html', {'suppliers': suppliers})
+
+@login_required
+@require_http_methods(['GET','POST'])
+def new_supplier(request):
+    form = SupplierForm(request.POST or None)
+    if form.is_valid():
+        form.save(); messages.success(request, 'Proveedor creado correctamente.'); return redirect('suppliers')
+    return render(request, 'stock/contact_form.html', {'form': form, 'title': 'Nuevo proveedor', 'icon': '🏢'})
 
 
 @login_required
