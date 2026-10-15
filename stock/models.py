@@ -32,7 +32,7 @@ class Product(Timestamped):
     class Meta: verbose_name="Producto"; verbose_name_plural="Productos"; ordering=["name"]
 
 class Purchase(Timestamped):
-    supplier=models.ForeignKey(Supplier,verbose_name="Proveedor",on_delete=models.PROTECT); invoice_number=models.CharField("N.º de factura / comprobante",max_length=80,blank=True); purchased_at=models.DateField("Fecha de compra",default=timezone.localdate); total=models.DecimalField("Total (Gs.)",max_digits=16,decimal_places=0,default=0); notes=models.TextField("Observaciones",blank=True); created_by=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.SET_NULL,null=True,blank=True)
+    supplier=models.ForeignKey(Supplier,verbose_name="Proveedor",on_delete=models.PROTECT); invoice_number=models.CharField("N.º de factura / comprobante",max_length=80,blank=True); purchased_at=models.DateField("Fecha de compra",default=timezone.localdate); total=models.DecimalField("Total (Gs.)",max_digits=16,decimal_places=0,default=0); paid_from_cash=models.BooleanField("Pagado desde caja",default=True); notes=models.TextField("Observaciones",blank=True); created_by=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.SET_NULL,null=True,blank=True)
     def __str__(self): return f"Compra #{self.pk} - {self.supplier}"
     class Meta: verbose_name="Compra"; verbose_name_plural="Compras"; ordering=["-purchased_at","-id"]
 

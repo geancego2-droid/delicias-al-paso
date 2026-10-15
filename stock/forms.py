@@ -7,7 +7,7 @@ class SaleForm(forms.ModelForm):
         model=Sale; fields=["customer","payment_method","paid","notes"]
 class PurchaseForm(forms.ModelForm):
     class Meta:
-        model=Purchase; fields=["supplier","invoice_number","purchased_at","notes"]; widgets={"purchased_at":forms.DateInput(attrs={"type":"date"})}
+        model=Purchase; fields=["supplier","invoice_number","purchased_at","paid_from_cash","notes"]; widgets={"purchased_at":forms.DateInput(attrs={"type":"date"})}
 SaleItemFormSet=inlineformset_factory(Sale,SaleItem,fields=["product","quantity","unit_price"],extra=1,can_delete=True)
 PurchaseItemFormSet=inlineformset_factory(Purchase,PurchaseItem,fields=["product","quantity","unit_cost"],extra=1,can_delete=True)
 class ProductForm(forms.ModelForm):
